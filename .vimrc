@@ -189,7 +189,12 @@ imap <C-v> <esc>"+gPi
 imap <C-d> <esc>yypi
 
 " fast search and replace word under  cursor
-nmap ; :%s/\<<c-r>=expand("<cword>")<cr>\>/
+nmap <C-h> :%s/\<<c-r>=expand("<cword>")<cr>\>/
+
+" Swap ; and :
+map ; :
+noremap ;; ;
+
 
 " F5 - show buffers
 nmap <F5> <Esc>:BufExplorer<cr>
@@ -251,5 +256,7 @@ set runtimepath^=~/.vim/bundle/kien-ctrlp.vim/plugin/ctrlp.vim
 let g:ctrlp_use_caching = 1
 let g:ctrlp_cache_dir = '~/.vim/.cache/ctrlp'
 
-
+set autochdir
+let NERDTreeChDirMode=2
+nnoremap <leader>n :NERDTree .<CR>
 
