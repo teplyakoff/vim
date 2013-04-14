@@ -1,28 +1,53 @@
-source ~/.vim/settings.vim
-"--------------------------+
-"        General           |
-"--------------------------+
-"pathogen
-let g:pathogen_disabled = []
-if !has('gui_running')
-   call add(g:pathogen_disabled, 'powerline')
-endif
+" Not compatible with the old-fashion vi mode
+set nocompatible
 
-call pathogen#runtime_append_all_bundles()
+"{{{ Pathogen
+filetype off
+
 call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
 
-" set <leader> key 
+filetype plugin indent on
+"}}}
+
+" Show incomplete commands in statusbar
+set showcmd
+
+"{{{ Search
+
+" Ignore case for search
+set ignorecase
+
+" Search while typing string
+set incsearch
+
+" Higlight search result
+set hlsearch 
+"}}}
+
+"{{{ Indentation
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+set smartindent
+"}}}
+
+" Remove the buffer after tab was closed
+set nohidden
+
+" Highlight current line
+set cul
+
+" Set <leader> key 
 let mapleader = ","
 let g:mapleader = ","
 
-" autoreload vimrc
-autocmd! bufwritepost .vimrc source ~/.vimrc
-
-" gundo 
+" Gundo 
 nnoremap <F6> :GundoToggle<CR>
 
-" folding
-set foldenable                  " enable folding
+"{{{ Folding
+set foldenable
 set foldcolumn=2                " add a fold column
 set foldmethod=marker           " detect triple-{ style fold markers
 set foldlevelstart=99           " start out with everything folded
@@ -44,20 +69,17 @@ function! MyFoldText()
     return line . ' …' . repeat(" ",fillcharcount) . foldedlinecount . ' '
 endfunction
 set foldtext=MyFoldText()
+"}}}
 
-" file options
+"{{{ File options
 set fileencodings=utf8
 set encoding=utf8 nobomb " utf-8 with out BOM
 set termencoding=utf-8 " default text encoding
 set ff=unix " default file format
+"}}}
 
-" not compatible with the old-fashion vi mode
-set nocompatible
+"{{{ Appearance
 
-
-"--------------------------+
-"        Appearance        |
-"--------------------------+
 " color shceme
 colorscheme molokai
 let g:molokai_original=1
@@ -68,9 +90,6 @@ set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %{&fileformat}\ [LEN=%L]
 
 " show line numbers
 set nu
-
-" Show incomplete commands in statusbar
-set showcmd
 
 " always show cursor
 set ruler
@@ -92,17 +111,11 @@ set t_Co=256
 
 " the first guy to show bracket after entering the second
 set showmatch
-
 " show brackets for html
 set matchpairs+=<:>
 
-"higlight search result
-set hlsearch 
+"{{{ Misc
 
-
-"--------------------------+
-"           Misc           |
-"--------------------------+
 " hide mouse pointer when printing
 set mousehide 
 
@@ -129,17 +142,6 @@ set nofoldenable
 " set 7 lines to the cursor - when moving vertically using j/k
 set so=7 
 
-" enable autoident
-set autoindent
-
-" tabs
-set expandtab " tab to spaces
-set shiftwidth=4 "size of tab
-set softtabstop=4
-set tabstop=4
-
-" enable smart indent
-set smartindent
 
 " Fix <Enter> for comment
 set fo+=cr
@@ -162,24 +164,12 @@ set mouse=a
 set mousemodel=popup
 
 
-"--------------------------+
-"         Mapping          |
-"--------------------------+
-"C-q - comment/uncomment (NERD_Comment)
-map <C-q> <leader>ci
-nmap <C-q> <leader>ci
-imap <C-q> <ESC><leader>cii
+"{{{ Mapping
 
 " PHP documenter script bound to Control-K
 autocmd FileType php inoremap <C-K> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-K> :call PhpDocSingle()<CR>
 autocmd FileType php vnoremap <C-K> :call PhpDocRange()<CR>
-
-"disable arrows
-map <left> <nop>
-map <right> <nop>
-map <up> <nop>
-map <down> <nop>
 
 " C-c and C-v - Copy/Paste to global clipboard
 vmap <C-C> "+yi
@@ -195,6 +185,20 @@ nmap <C-h> :%s/\<<c-r>=expand("<cword>")<cr>\>/
 map ; :
 noremap ;; ;
 
+" Up and down are more logical with g..
+nnoremap <silent> k gk
+nnoremap <silent> j gj
+inoremap <silent> <Up> <Esc>gka
+inoremap <silent> <Down> <Esc>gja
+
+" Create Blank Newlines and stay in Normal mode
+nnoremap <silent> zj o<Esc>
+nnoremap <silent> zk O<Esc>
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+map N Nzz
+map n nzz
 
 " F5 - show buffers
 nmap <F5> <Esc>:BufExplorer<cr>
@@ -204,12 +208,6 @@ imap <F5> <esc><esc>:BufExplorer<cr>
 " < & > - indent of blocks
 vmap < <gv
 vmap > >gv
-
-" auto insert ]
-imap [ []<LEFT>
-
-" auto insert }
-imap {<CR> {<CR>}<Esc>
 
 " reselct paste text
 nnoremap <leader>v V`]
@@ -259,4 +257,11 @@ let g:ctrlp_cache_dir = '~/.vim/.cache/ctrlp'
 set autochdir
 let NERDTreeChDirMode=2
 nnoremap <leader>n :NERDTree .<CR>
+
+map <leader>h :nohl<cr>
+"}}}
+
+"{{{ Custom
+source ~/.vim/settings.vim
+"}}}
 
