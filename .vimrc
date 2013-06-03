@@ -259,8 +259,10 @@ let NERDTreeChDirMode=2
 nnoremap <leader>n :NERDTree .<CR>
 
 map <leader>h :nohl<cr>
+"}}}
 
-imap ; ;<CR>
+"{{{ Additional syntax
+autocmd BufRead,BufNewFile *.twig set filetype=htmljinja
 "}}}
 
 "{{{ Custom
